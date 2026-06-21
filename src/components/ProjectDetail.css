@@ -1,0 +1,157 @@
+/* Emerges from behind folder center — macOS-style expand */
+.project-detail {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: min(920px, 92vw);
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.project-detail__images,
+.project-detail__text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -50%) scale(0.12);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity, filter, top, bottom;
+}
+
+/* Images fan upward out of the folder */
+.project-detail__images {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: clamp(1.5rem, 4.5vw, 2.75rem);
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  filter: blur(4px);
+  transition:
+    top 0.5s cubic-bezier(0.22, 1.12, 0.36, 1),
+    bottom 0.5s cubic-bezier(0.22, 1.12, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1.12, 0.36, 1),
+    opacity 0.35s ease,
+    filter 0.45s ease,
+    visibility 0s linear 0.4s;
+}
+
+.project-detail--visible .project-detail__images {
+  top: clamp(-2.5rem, -6vh, -0.75rem);
+  bottom: auto;
+  transform: translate(-50%, 0) scale(1);
+  opacity: 1;
+  visibility: visible;
+  filter: blur(0);
+  pointer-events: auto;
+  transition:
+    top 0.5s cubic-bezier(0.22, 1.12, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1.12, 0.36, 1),
+    opacity 0.35s ease 0.08s,
+    filter 0.45s ease,
+    visibility 0s linear 0s;
+}
+
+.project-detail__images .image-3d-card {
+  opacity: 0;
+  transform: translateY(20px) scale(0.88);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1.12, 0.36, 1),
+    opacity 0.38s ease;
+  transition-delay: calc(0.08s + var(--image-index, 0) * 0.07s);
+}
+
+.project-detail--visible .project-detail__images .image-3d-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Description unfolds downward from the folder */
+.project-detail__text {
+  bottom: auto;
+  width: min(520px, 85vw);
+  max-width: 100%;
+  text-align: center;
+  filter: blur(3px);
+  transition:
+    top 0.5s cubic-bezier(0.22, 1.12, 0.36, 1),
+    bottom 0.5s cubic-bezier(0.22, 1.12, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1.12, 0.36, 1) 0.06s,
+    opacity 0.35s ease 0.06s,
+    filter 0.45s ease 0.06s,
+    visibility 0s linear 0.4s;
+}
+
+.project-detail--visible .project-detail__text {
+  top: auto;
+  bottom: clamp(0.25rem, 3vh, 1.5rem);
+  transform: translate(-50%, 0) scale(1);
+  opacity: 1;
+  visibility: visible;
+  filter: blur(0);
+  transition:
+    bottom 0.5s cubic-bezier(0.22, 1.12, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1.12, 0.36, 1) 0.06s,
+    opacity 0.35s ease 0.14s,
+    filter 0.45s ease 0.06s,
+    visibility 0s linear 0s;
+}
+
+.project-detail__title {
+  margin: 0 0 0.5rem;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.03em;
+}
+
+.project-detail__description {
+  margin: 0;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  font-size: clamp(0.75rem, 1.8vw, 0.9rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-detail__images,
+  .project-detail__text,
+  .project-detail__images .image-3d-card {
+    transition: opacity 0.15s ease !important;
+    transition-delay: 0s !important;
+    filter: none !important;
+  }
+
+  .project-detail__images,
+  .project-detail__text {
+    top: 50%;
+    bottom: auto;
+    transform: translate(-50%, -50%) scale(0.12);
+  }
+
+  .project-detail--visible .project-detail__images {
+    top: clamp(-2.5rem, -6vh, -0.75rem);
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .project-detail--visible .project-detail__text {
+    top: auto;
+    bottom: clamp(0.25rem, 3vh, 1.5rem);
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .project-detail--visible .project-detail__images .image-3d-card {
+    transform: none;
+    opacity: 1;
+  }
+}

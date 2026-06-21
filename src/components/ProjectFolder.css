@@ -1,0 +1,41 @@
+.project-folder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 7.5rem;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.project-folder--center {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.project-folder__icon {
+  display: block;
+  width: clamp(58px, 9vw, 84px);
+  height: auto;
+  margin-left: 0.2rem;
+  filter: drop-shadow(0 6px 18px color-mix(in srgb, var(--folder-glow, #4da3ff) 30%, transparent));
+}
+
+.project-folder--center .project-folder__icon {
+  filter: drop-shadow(0 10px 26px color-mix(in srgb, var(--folder-glow, #4da3ff) 50%, transparent));
+}
+
+.project-folder__label {
+  width: 100%;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  font-size: clamp(0.72rem, 1.5vw, 0.88rem);
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}

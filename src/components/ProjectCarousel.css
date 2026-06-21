@@ -1,0 +1,131 @@
+.project-carousel {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.project-carousel__cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 2.5vw, 1.5rem);
+  flex-shrink: 0;
+}
+
+.project-carousel__category {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.35rem 0.15rem;
+  border: none;
+  background: transparent;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  font-size: clamp(0.8rem, 1.6vw, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.28);
+  cursor: pointer;
+  text-orientation: mixed;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  z-index: 4;
+}
+
+.project-carousel__category--left {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.project-carousel__category--right {
+  writing-mode: vertical-rl;
+}
+
+.project-carousel__category--active {
+  color: #fff;
+}
+
+.project-carousel__category:not(.project-carousel__category--active):hover {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.project-carousel__category--active.project-carousel__category--left {
+  text-shadow: 0 0 20px rgba(77, 163, 255, 0.35);
+}
+
+.project-carousel__category--active.project-carousel__category--right {
+  text-shadow: 0 0 20px rgba(244, 114, 182, 0.35);
+}
+
+.project-carousel__viewport {
+  position: relative;
+  width: 11.25rem;
+  height: min(72vh, 34rem);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1300px;
+  perspective-origin: 50% 50%;
+  overflow: visible;
+  outline: none;
+  cursor: default;
+  isolation: isolate;
+}
+
+.project-carousel__drum {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.project-carousel__drum > .project-folder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.2s ease;
+}
+
+.project-carousel__hint {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  min-height: 1em;
+}
+
+@media (max-width: 640px) {
+  .project-carousel__cluster {
+    gap: 0.5rem;
+  }
+
+  .project-carousel__category {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.1rem;
+  }
+
+  .project-carousel__viewport {
+    width: 9rem;
+    height: min(65vh, 28rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-carousel__drum > .project-folder {
+    transition: opacity 0.15s ease !important;
+  }
+
+  .project-carousel__category {
+    transition: color 0.15s ease;
+  }
+}

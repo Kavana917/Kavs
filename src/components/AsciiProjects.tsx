@@ -6,6 +6,7 @@ import {
 } from '../utils/asciiConverter'
 import projectsVideo from '../../media/projects.mp4'
 import { useAsciiVideoLoop } from '../hooks/useAsciiVideoLoop'
+import { ProjectCarousel } from './ProjectCarousel'
 import './AsciiProjects.css'
 
 export function AsciiProjects() {
@@ -19,8 +20,7 @@ export function AsciiProjects() {
   const onReady = useCallback(() => setReady(true), [])
   const onFontSize = useCallback((size: number) => setFontSize(size), [])
   const getViewportHeight = useCallback(
-    (windowHeight: number, aspectHeight: number) =>
-      Math.max(windowHeight * 0.7, aspectHeight),
+    (_windowHeight: number, _aspectHeight: number) => window.innerHeight,
     [],
   )
   const getFrameOptions = useCallback(
@@ -67,6 +67,8 @@ export function AsciiProjects() {
           aria-hidden="true"
         />
       </div>
+
+      <ProjectCarousel />
     </section>
   )
 }

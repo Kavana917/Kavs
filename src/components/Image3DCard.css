@@ -1,0 +1,46 @@
+.image-3d-card {
+  perspective: 900px;
+  flex-shrink: 0;
+}
+
+.image-3d-card__body {
+  transform-style: preserve-3d;
+  transition: transform 0.12s ease-out;
+  will-change: transform;
+}
+
+.image-3d-card__surface {
+  width: clamp(110px, 20vw, 240px);
+  height: clamp(78px, 14vw, 168px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  transform: translateZ(36px);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.image-3d-card:hover .image-3d-card__surface {
+  transform: translateZ(72px);
+  box-shadow:
+    0 28px 56px rgba(0, 0, 0, 0.65),
+    0 0 24px rgba(77, 163, 255, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-3d-card__body {
+    transition: none;
+    transform: none !important;
+  }
+
+  .image-3d-card__surface {
+    transform: none;
+  }
+
+  .image-3d-card:hover .image-3d-card__surface {
+    transform: none;
+  }
+}
