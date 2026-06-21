@@ -1,0 +1,110 @@
+.project-row {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  width: 100%;
+  min-height: 420px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.35s ease;
+}
+
+.project-row--reversed {
+  grid-template-columns: 40% 60%;
+}
+
+.project-row--reversed .project-row__image {
+  order: 2;
+}
+
+.project-row--reversed .project-row__content {
+  order: 1;
+}
+
+.project-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.project-row__image {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-row__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 3.5rem;
+  gap: 0.75rem;
+}
+
+.project-row__number {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.project-row__title {
+  margin: 0;
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-row--hovered .project-row__title {
+  transform: translateX(12px);
+}
+
+.project-row--reversed.project-row--hovered .project-row__title {
+  transform: translateX(-12px);
+}
+
+.project-row__description {
+  margin: 0;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 36ch;
+}
+
+.project-row__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-row__tag {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 900px) {
+  .project-row,
+  .project-row--reversed {
+    grid-template-columns: 1fr;
+  }
+
+  .project-row--reversed .project-row__image,
+  .project-row--reversed .project-row__content {
+    order: unset;
+  }
+
+  .project-row__image {
+    min-height: 260px;
+  }
+
+  .project-row__content {
+    padding: 2rem 1.5rem;
+  }
+}
