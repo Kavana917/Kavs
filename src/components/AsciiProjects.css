@@ -1,0 +1,47 @@
+.ascii-projects {
+  position: relative;
+  width: 100vw;
+  min-height: 70vh;
+  overflow: hidden;
+  background: #000;
+  z-index: 1;
+}
+
+.ascii-projects__stage {
+  position: relative;
+  width: 100%;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ascii-projects__video,
+.ascii-projects__canvas {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ascii-projects__output {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: 0;
+  color: #fff;
+  background: transparent;
+  white-space: pre;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  user-select: none;
+}
+
+.ascii-projects__output--ready {
+  opacity: 1;
+}
