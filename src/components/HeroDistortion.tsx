@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type RefObject } from 'react'
 import './HeroDistortion.css'
 
 const VERTEX_SHADER = `
@@ -89,32 +89,31 @@ function createProgram(gl: WebGLRenderingContext) {
 }
 
 interface HeroDistortionProps {
-  outputRef: React.RefObject<HTMLPreElement | null>
+  outputRef: RefObject<HTMLPreElement | null>
+  sectionRef: RefObject<HTMLElement | null>
 }
 
-export function HeroDistortion({ outputRef }: HeroDistortionProps) {
+export function HeroDistortion({ outputRef, sectionRef }: HeroDistortionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const glRef = useRef<WebGLRenderingContext | null>(null)
-  const programRef = useRef<WebGLProgram | null>(null)
   const mouseRef = useRef({ x: 0.5, y: 0.5 })
   const intensityRef = useRef(0)
   const timeRef = useRef(0)
   const hoveringRef = useRef(false)
   const frameRef = useRef(0)
+  const loopActiveRef = useRef(false)
 
   useEffect(() => {
     const canvas = canvasRef.current
     const container = containerRef.current
-    if (!canvas || !container) return
+    const section = sectionRef.current
+    if (!canvas || !container || !section) return
 
     const gl = canvas.getContext('webgl', { alpha: true, antialias: false, premultipliedAlpha: true })
     if (!gl) return
-    glRef.current = gl
 
     const program = createProgram(gl)
     if (!program) return
-    programRef.current = program
 
     const positionLoc = gl.getAttribLocation(program, 'a_position')
     const texCoordLoc = gl.getAttribLocation(program, 'a_texCoord')
@@ -155,6 +154,10 @@ export function HeroDistortion({ outputRef }: HeroDistortionProps) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
     gl.uniform1i(uniforms.texture, 0)
 
+    const setOverlayVisible = (visible: boolean) => {
+      container.classList.toggle('hero-distortion--active', visible)
+    }
+
     const draw = () => {
       const output = outputRef.current
       if (!output) return
@@ -172,8 +175,12 @@ export function HeroDistortion({ outputRef }: HeroDistortionProps) {
       }
 
       gl.texImage2D(
-        gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE,
-        output,
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        output as unknown as TexImageSource,
       )
 
       gl.clearColor(0, 0, 0, 0)
@@ -186,23 +193,42 @@ export function HeroDistortion({ outputRef }: HeroDistortionProps) {
       gl.drawArrays(gl.TRIANGLES, 0, 6)
     }
 
+    const stopLoop = () => {
+      loopActiveRef.current = false
+      cancelAnimationFrame(frameRef.current)
+    }
+
+    const startLoop = () => {
+      if (loopActiveRef.current) return
+      loopActiveRef.current = true
+      setOverlayVisible(true)
+      frameRef.current = requestAnimationFrame(animate)
+    }
+
     const onMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect()
+      const rect = section.getBoundingClientRect()
       mouseRef.current = {
         x: (e.clientX - rect.left) / rect.width,
         y: 1 - (e.clientY - rect.top) / rect.height,
       }
     }
 
-    const onEnter = () => { hoveringRef.current = true }
-    const onLeave = () => { hoveringRef.current = false }
+    const onEnter = () => {
+      hoveringRef.current = true
+      startLoop()
+    }
 
-    container.addEventListener('mousemove', onMouseMove)
-    container.addEventListener('mouseenter', onEnter)
-    container.addEventListener('mouseleave', onLeave)
+    const onLeave = () => {
+      hoveringRef.current = false
+      if (!loopActiveRef.current && intensityRef.current > 0.01) {
+        startLoop()
+      }
+    }
 
     let lastTime = performance.now()
     const animate = (now: number) => {
+      if (!loopActiveRef.current) return
+
       timeRef.current += (now - lastTime) * 0.001
       lastTime = now
 
@@ -210,17 +236,28 @@ export function HeroDistortion({ outputRef }: HeroDistortionProps) {
       intensityRef.current += (target - intensityRef.current) * 0.05
 
       draw()
-      frameRef.current = requestAnimationFrame(animate)
+
+      if (intensityRef.current > 0.01 || hoveringRef.current) {
+        frameRef.current = requestAnimationFrame(animate)
+        return
+      }
+
+      stopLoop()
+      setOverlayVisible(false)
     }
-    frameRef.current = requestAnimationFrame(animate)
+
+    section.addEventListener('mousemove', onMouseMove)
+    section.addEventListener('mouseenter', onEnter)
+    section.addEventListener('mouseleave', onLeave)
 
     return () => {
-      cancelAnimationFrame(frameRef.current)
-      container.removeEventListener('mousemove', onMouseMove)
-      container.removeEventListener('mouseenter', onEnter)
-      container.removeEventListener('mouseleave', onLeave)
+      stopLoop()
+      setOverlayVisible(false)
+      section.removeEventListener('mousemove', onMouseMove)
+      section.removeEventListener('mouseenter', onEnter)
+      section.removeEventListener('mouseleave', onLeave)
     }
-  }, [outputRef])
+  }, [outputRef, sectionRef])
 
   return (
     <div ref={containerRef} className="hero-distortion">
