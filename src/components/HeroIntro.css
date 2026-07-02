@@ -1,0 +1,96 @@
+.hero-intro {
+  position: absolute;
+  bottom: clamp(0.5rem, 2vh, 1.5rem);
+  left: clamp(1.25rem, 3vw, 0rem);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: min(92vw, 32rem);
+  pointer-events: none;
+  font-family: 'Fragment Mono', monospace;
+  font-size: clamp(0.72rem, 1.65vw, 0.92rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.hero-intro__title {
+  margin: 0;
+  padding: 0 0.4em;
+  background: #fff;
+  color: #000;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: inherit;
+}
+
+.hero-intro__statements {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.hero-intro__line {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  min-height: 1em;
+}
+
+.hero-intro__statement {
+  display: inline-block;
+  padding: 0 0.4em;
+  background: #fff;
+  color: #000;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.hero-intro__statement--lie {
+  color: #e81919;
+}
+
+.hero-intro__cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  margin-left: 0.06em;
+  vertical-align: top;
+  background: #000;
+  animation: hero-intro-blink-cursor 0.9s step-end infinite;
+}
+
+@keyframes hero-intro-blink-cursor {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-intro__statement {
+    white-space: normal;
+    max-width: 88vw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-intro__cursor {
+    animation: none;
+  }
+}

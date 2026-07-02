@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import eyeVideo from '../../media/my_eye.mp4'
 import { useAsciiVideoLoop } from '../hooks/useAsciiVideoLoop'
 import { HeroDistortion } from './HeroDistortion'
+import { HeroIntro } from './HeroIntro'
 import './AsciiHero.css'
 
 export const HERO_OUTPUT_ID = 'ascii-hero-output'
@@ -50,6 +51,7 @@ export function AsciiHero() {
         />
       </div>
       <HeroDistortion outputRef={outputRef} sectionRef={sectionRef} />
+      <HeroIntro />
     </section>
   )
 }
